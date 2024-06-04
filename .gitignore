@@ -1,3 +1,8 @@
+cmake-build-debug/
+CMakeLists.txt
+.idea/
+ROMS/
+
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
