@@ -117,28 +117,67 @@ void Chip8::OP_8XY3() {
     registers[(opcode & 0x0F00) >> 8] ^= registers[(opcode & 0x00F0) >> 4];
 }
 
+/* Add value of register VY to VX, if there is a carry,
+ * set the VF register to 1, otherwise set it to 0 */
 void Chip8::OP_8XY4() {
+    uint8_t VX = (opcode & 0x0F00) >> 8;
+    uint16_t sum = registers[VX] + registers[(opcode & 0x00F0) >> 4];
 
+    if (sum > 255)
+        registers[0xF] = 1;
+    else
+        registers[0xF] = 0;
+
+    registers[VX] = sum & 0xFF;
 }
 
+/* Subtract value of register VY from VX, if there is a borrow,
+ * set the VF register to 0, otherwise set it to 1 */
 void Chip8::OP_8XY5() {
+    uint8_t VX = (opcode & 0x0F00) >> 8;
+    uint8_t VY = (opcode & 0x00F0) >> 4;
+    if (registers[VX] < registers[VY])
+        registers[0xF] = 0;
+    else
+        registers[0xF] = 1;
 
+    registers[VX] -= registers[VY];
 }
 
+/* Set register VX to value of VY shifted by 1 bit to the right,
+ * set register VF to the least significant bit of VX prior to the change */
 void Chip8::OP_8XY6() {
+    uint8_t VX = (opcode & 0x0F00) >> 8;
 
+    registers[0xF] = registers[VX] & 0x1;
+    registers[VX] = registers[(opcode & 0x00F0) >> 4] >> 1;
 }
 
+/* Set register VX to the value of VY subtracted by VX. If there was a borrow,
+ * set register VF to 0, otherwise set it to 1 */
 void Chip8::OP_8XY7() {
+    uint8_t VX = (opcode & 0x0F00) >> 8;
+    uint8_t VY = (opcode & 0x00F0) >> 4;
 
+    if (registers[VY] < registers[VX])
+        registers[0xF] = 0;
+    else
+        registers[0xF] = 1;
+
+    registers[VX] = registers[VY] - registers[VX];
 }
 
+/* Set register VX to VY shifted left by 1,
+ * set the VF register to the most significant bit of VX prior to the change */
 void Chip8::OP_8XYE() {
+    uint8_t VX = (opcode & 0x0F00) >> 8;
 
+    registers[0xF] = (registers[VX] & 0x80) >> 7;
+    registers[VX] = registers[(opcode & 0x00F0) >> 4] << 1;
 }
 
 void Chip8::OP_9XY0() {
-
+    
 }
 
 void Chip8::OP_ANNN() {
