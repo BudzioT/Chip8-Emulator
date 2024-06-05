@@ -81,32 +81,40 @@ void Chip8::OP_4XNN() {
         pc += 2;
 }
 
+/* Skip the next instruction if register VX is equal to the register VY */
 void Chip8::OP_5XY0() {
-
+    if (registers[(opcode & 0x0F00) >> 8] == registers[(opcode & 0x00F0) >> 4])
+        pc += 2;
 }
 
+/* Store NN into register VX */
 void Chip8::OP_6XNN() {
-
+    registers[(opcode & 0x0F00) >> 8] = (opcode & 0x00FF);
 }
 
+/* Add NN to the register VX */
 void Chip8::OP_7XNN() {
-
+    registers[(opcode & 0x0F00) >> 8] += (opcode & 0x00FF);
 }
 
+/* Store the value of register VY into register VX */
 void Chip8::OP_8XY0() {
-
+    registers[(opcode & 0x0F00) >> 8] = registers[(opcode & 0x00F0) >> 4];
 }
 
+/* Set register VX to the result of VX OR VY */
 void Chip8::OP_8XY1() {
-
+    registers[(opcode & 0x0F00) >> 8] |= registers[(opcode & 0x00F0) >> 4];
 }
 
+/* Set register VX to the result of VX AND VY */
 void Chip8::OP_8XY2() {
-
+    registers[(opcode & 0x0F00) >> 8] &= registers[(opcode & 0x00F0) >> 4];
 }
 
+/* Set register VX to the result of VX XOR VY */
 void Chip8::OP_8XY3() {
-
+    registers[(opcode & 0x0F00) >> 8] ^= registers[(opcode & 0x00F0) >> 4];
 }
 
 void Chip8::OP_8XY4() {
