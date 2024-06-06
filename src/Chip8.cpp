@@ -149,7 +149,7 @@ void Chip8::OP_8XY5() {
 void Chip8::OP_8XY6() {
     uint8_t VX = (opcode & 0x0F00) >> 8;
 
-    registers[0xF] = registers[VX] & 0x1;
+    registers[0xF] = registers[VY] & 0x1;
     registers[VX] = registers[(opcode & 0x00F0) >> 4] >> 1;
 }
 
@@ -171,9 +171,10 @@ void Chip8::OP_8XY7() {
  * set the VF register to the most significant bit of VX prior to the change */
 void Chip8::OP_8XYE() {
     uint8_t VX = (opcode & 0x0F00) >> 8;
+    uint8_t VY = (opcode & 0x00F0) >> 4;
 
-    registers[0xF] = (registers[VX] & 0x80) >> 7;
-    registers[VX] = registers[(opcode & 0x00F0) >> 4] << 1;
+    registers[0xF] = (registers[VY] & 0x80) >> 7;
+    registers[VX] = registers[VY] << 1;
 }
 
 void Chip8::OP_9XY0() {
