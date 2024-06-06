@@ -148,9 +148,10 @@ void Chip8::OP_8XY5() {
  * set register VF to the least significant bit of VX prior to the change */
 void Chip8::OP_8XY6() {
     uint8_t VX = (opcode & 0x0F00) >> 8;
+    uint8_t VY = (opcode & 0x00F0) >> 4;
 
     registers[0xF] = registers[VY] & 0x1;
-    registers[VX] = registers[(opcode & 0x00F0) >> 4] >> 1;
+    registers[VX] = registers[VY] >> 1;
 }
 
 /* Set register VX to the value of VY subtracted by VX. If there was a borrow,
@@ -177,20 +178,25 @@ void Chip8::OP_8XYE() {
     registers[VX] = registers[VY] << 1;
 }
 
+/* If register VX isn't equal to VY, skip the next instruction */
 void Chip8::OP_9XY0() {
-    
+    if (registers[(opcode & 0x0F00)] != registers[(opcode & 0x00F0)])
+        pc += 2;
 }
 
+/* Store the given address into index register */
 void Chip8::OP_ANNN() {
-
+    index = opcode & 0x0FFF;
 }
 
+/* Jump to the given address added to register V0 */
 void Chip8::OP_BNNN() {
-
+    pc = (opcode & 0x0FFF) + registers[0x0];
 }
 
+/* Set register VX to random number with NN as mask */
 void Chip8::OP_CXNN() {
-
+    registers[opcode & 0x0F00] = rand(randEng) & (opcode & 0x00FF);
 }
 
 void Chip8::OP_DXYN() {
