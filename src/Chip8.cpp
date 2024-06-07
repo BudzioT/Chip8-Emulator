@@ -292,15 +292,39 @@ void Chip8::OP_FX29() {
     index = START_FONT_ADDRESS + ((opcode & 0x0F00) >> 8) * 5;
 }
 
+/* Store binary-coded decimal value of register VX at addresses I, I + 1 and I + 2 */
 void Chip8::OP_FX33() {
+    uint8_t val = registers[(opcode & 0x0F00) >> 8];
 
+    /* Go through ones-place, tens-place and hundreds-place. Place them at the right location */
+    for (int i = 2; i >= 0; i--, val /= 10)
+        memory[index + i] = val % 10;
 }
 
+/* Store the value of registers V0 to VX inclusive in memory starting at address I.
+ * Set I to I + X + 1 */
 void Chip8::OP_FX55() {
+    int x = ((opcode & 0x0F00) >> 8);
 
+    /* Go through each register from V0 to VX inclusive, insert values from them into memory starting at I */
+    for (int i = 0; i <= x; i++)
+        memory[index + i] = registers[i];
+
+    /* Set the register I */
+    index = index + x + 1;
 }
 
+/* Store the value of memory starting at address I in registers ranging from V0 to VX inclusive.
+ * Set I to I + X + 1 */
 void Chip8::OP_FX65() {
+    int x = ((opcode & 0x0F00) >> 8);
 
+    /* Go through each register from V0 to VX inclusive,
+     * set their values to memory addresses values starting at I */
+    for (int i = 0; i <= x; i++)
+        registers[i] = memory[index + i];
+
+    /* Set the register I */
+    index = index + x + 1;
 }
 
