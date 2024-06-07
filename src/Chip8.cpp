@@ -199,8 +199,45 @@ void Chip8::OP_CXNN() {
     registers[opcode & 0x0F00] = rand(randEng) & (opcode & 0x00FF);
 }
 
+/* Draw sprite at position VX, VY, with height of N, starting from index position.
+ * If any pixels are changed to unset, change register VF to 1, otherwise set it to 0 */
 void Chip8::OP_DXYN() {
+    uint8_t VX = (opcode & 0x0F00) >> 8;
+    uint8_t VY = (opcode & 0x00F0) >> 4;
 
+    /* Height of sprite */
+    uint8_t bytes = opcode & 0x000F;
+
+    /* Display positions */
+    uint8_t xPos = registers[VX] % VIDEO_WIDTH;
+    uint8_t yPos = registers[VY] % VIDEO_HEIGHT;
+
+    /* Set VF to 0 */
+    registers[0xF] = 0;
+
+    /* Run through all the rows */
+    for (unsigned int row = 0; row < bytes; ++row) {
+        /* Sprite byte, stored at memory indicated by index, increases with row */
+        uint8_t spriteByte = memory[index + row];
+
+        /* Run through every column (sprite width is always 8) */
+        for (unsigned int col = 0; col < 8; ++col) {
+            /* Get sprite pixel bit by shifting bits based of a column */
+            uint8_t spritePixel = spriteByte & (0x80 >> col);
+            /* Get display pixel from position + row and columns, multiplied by video width
+             * (needed for indexing, because it is one-dimensional array) */
+            uint32_t* displayPixel = &video[(xPos + col) + (yPos + row) * VIDEO_WIDTH];
+
+            /* If sprite pixel is on, check if the display pixel is also on, if so, set VF to 1,
+             * then XOR the video pixel with sprite pixel (which is on) */
+            if (spritePixel) {
+                if (*displayPixel == UINT32_MAX)
+                    registers[0xF] = 1;
+
+                *displayPixel ^= UINT32_MAX;
+            }
+        }
+    }
 }
 
 void Chip8::OP_EX9E() {
