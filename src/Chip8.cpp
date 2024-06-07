@@ -240,36 +240,56 @@ void Chip8::OP_DXYN() {
     }
 }
 
+/* If the key corresponding to value at register's VX is pressed, skip the next instruction */
 void Chip8::OP_EX9E() {
-
+    if (keys[registers[(opcode & 0x0F00) >> 8]])
+        pc += 2;
 }
 
+/* If the key corresponding to value at register's VX isn't pressed, skip the next instruction */
 void Chip8::OP_EXA1() {
-
+    if (!keys[registers[(opcode & 0x0F00) >> 8]])
+        pc += 2;
 }
 
+/* Set the register VX to the value of delay timer */
 void Chip8::OP_FX07() {
-
+    registers[(opcode & 0x0F00) >> 8] = delayTimer;
 }
 
+/* Wait for a keypress and store the key in register VX */
 void Chip8::OP_FX0A() {
+    /* Go through every key, if it is on, save it to register VX, else repeat this instruction */
+    for (uint8_t key : keys) {
+        if (key) {
+            registers[(opcode & 0x0F00) >> 8] = key;
+            /* Continue the flow */
+            return;
+        }
+    }
 
+    /* Go back to this instruction */
+    pc -= 2;
 }
 
+/* Set the delay timer to the value of register VX */
 void Chip8::OP_FX15() {
-
+    delayTimer = registers[(opcode & 0x0F00) >> 8];
 }
 
+/* Set the sound timer to the value of register VX */
 void Chip8::OP_FX18() {
-
+    soundTimer = registers[(opcode & 0x0F00) >> 8];
 }
 
+/* Add the value of register VX to the register I */
 void Chip8::OP_FX1E() {
-
+    index += registers[(opcode & 0x0F00) >> 8];
 }
 
+/* Set register I to the address of sprite corresponding to the hex value stored in register VX */
 void Chip8::OP_FX29() {
-
+    index = START_FONT_ADDRESS + ((opcode & 0x0F00) >> 8) * 5;
 }
 
 void Chip8::OP_FX33() {
