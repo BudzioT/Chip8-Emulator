@@ -18,6 +18,7 @@ public:
     Chip8();
 
     void LoadROM(const char* fileName);
+    void Cycle();
 
 private:
     void OP_00E0();
@@ -55,7 +56,19 @@ private:
     void OP_FX55();
     void OP_FX65();
 
+    void Table0();
+    void Table8();
+    void TableE();
+    void TableF();
+
 public:
+    uint32_t video[64 * 32] { };
+    uint8_t keys[16] { };
+
+private:
+    std::default_random_engine randEng;
+    std::uniform_int_distribution<uint8_t> rand;
+
     uint8_t memory[4096] { };
     uint8_t registers[16] { };
     uint16_t stack[16] { };
@@ -64,13 +77,15 @@ public:
     uint8_t sp = 0;
     uint8_t delayTimer = 0;
     uint8_t soundTimer = 0;
-    uint32_t video[64 * 32] { };
-    uint8_t keys[16] { };
     uint16_t opcode = 0;
 
-private:
-    std::default_random_engine randEng;
-    std::uniform_int_distribution<uint8_t> rand;
+    typedef void (Chip8::*Chip8Func)();
+
+    Chip8Func table[0xF + 1];
+    Chip8Func table0[0xE + 1];
+    Chip8Func table8[0xE + 1];
+    Chip8Func tableE[0xE + 1];
+    Chip8Func tableF[0x65 + 1];
 };
 
 

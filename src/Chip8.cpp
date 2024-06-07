@@ -328,3 +328,23 @@ void Chip8::OP_FX65() {
     index = index + x + 1;
 }
 
+/* Use right opcode method from table 0, based off of last digit */
+void Chip8::Table0() {
+    ((*this).*(table0[opcode & 0x000F]))();
+}
+
+/* Use right opcode method from table 8, based off of last digit */
+void Chip8::Table8() {
+    ((*this).*(table8[opcode & 0x000F]))();
+}
+
+/* Use right opcode method from table E, based off of last digit */
+void Chip8::TableE() {
+    ((*this).*(tableE[opcode & 0x000F]))();
+}
+
+/* Use right opcode method from table F, based off of two last digits */
+void Chip8::TableF() {
+    ((*this).*(tableE[opcode & 0x00FF]))();
+}
+
