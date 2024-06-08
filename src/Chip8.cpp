@@ -411,6 +411,22 @@ void Chip8::TableF() {
     ((*this).*(tableE[opcode & 0x00FF]))();
 }
 
+/* Fetch, decode and execute the instruction, move pc to the next one */
 void Chip8::Cycle() {
-    
+    /* Fetch the opcode */
+    opcode = (memory[pc] << 8) & memory[pc + 1];
+
+    /* Move to the next instruction */
+    pc += 2;
+
+    /* Decode, execute the instruction based of the first digit */
+    ((*this).*(table[(opcode & 0xF000) >> 12]))();
+
+    /* If delay timer is on, decrement it */
+    if (delayTimer > 0)
+        --delayTimer;
+
+    /* If sound timer is on, decrement it */
+    if (soundTimer > 0)
+        --soundTimer;
 }
