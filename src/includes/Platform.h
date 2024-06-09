@@ -9,7 +9,8 @@
 #include <GL/gl.h>
 
 
-class Platform {
+class Platform
+{
 public:
     Platform(const char* title, int width, int height, int textureWidth, int textureHeight);
     ~Platform();
@@ -19,7 +20,7 @@ public:
 
 private:
     SDL_Window* window { };
-    SDL_GLContext* glContext { };
+    SDL_GLContext glContext { };
     SDL_Renderer* renderer { };
     SDL_Texture* texture { };
     GLuint framebufferTexture;
