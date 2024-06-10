@@ -36,7 +36,7 @@ int main(int argc, char* args[]) {
     /* Emulate until quit is requested */
     while (!quit) {
         /* Process keys, check if the user wants to quit */
-        quit = platform.ProcessInput(emu.keys);
+        quit = Platform::ProcessInput(emu.keys);
 
         /* Save current cycle time */
         auto currentTime = std::chrono::system_clock::now();
