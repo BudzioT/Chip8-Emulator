@@ -237,7 +237,7 @@ void Chip8::OP_8XYE() {
 
 /* If register VX isn't equal to VY, skip the next instruction */
 void Chip8::OP_9XY0() {
-    if (registers[(opcode & 0x0F00)] != registers[(opcode & 0x00F0)])
+    if (registers[(opcode & 0x0F00) >> 8] != registers[(opcode & 0x00F0) >> 4])
         pc += 2;
 }
 
@@ -253,7 +253,7 @@ void Chip8::OP_BNNN() {
 
 /* Set register VX to random number with NN as mask */
 void Chip8::OP_CXNN() {
-    registers[opcode & 0x0F00] = rand(randEng) & (opcode & 0x00FF);
+    registers[(opcode & 0x0F00) >> 8] = rand(randEng) & (opcode & 0x00FF);
 }
 
 /* Draw sprite at position VX, VY, with height of N, starting from index position.
@@ -288,10 +288,10 @@ void Chip8::OP_DXYN() {
             /* If sprite pixel is on, check if the display pixel is also on, if so, set VF to 1,
              * then XOR the video pixel with sprite pixel (which is on) */
             if (spritePixel) {
-                if (*displayPixel == UINT32_MAX)
+                if (*displayPixel == 0xFFFFFFFF)
                     registers[0xF] = 1;
 
-                *displayPixel ^= UINT32_MAX;
+                *displayPixel ^= 0xFFFFFFFF;
             }
         }
     }
@@ -317,10 +317,9 @@ void Chip8::OP_FX07() {
 /* Wait for a keypress and store the key in register VX */
 void Chip8::OP_FX0A() {
     /* Go through every key, if it is on, save it to register VX, else repeat this instruction */
-    for (uint8_t key : keys) {
-        if (key) {
-            registers[(opcode & 0x0F00) >> 8] = key;
-            /* Continue the flow */
+    for (int i = 0; i < 16; i++) {
+        if (keys[i]) {
+            registers[(opcode & 0x0F00) >> 8] = i;
             return;
         }
     }
@@ -346,7 +345,7 @@ void Chip8::OP_FX1E() {
 
 /* Set register I to the address of sprite corresponding to the hex value stored in register VX */
 void Chip8::OP_FX29() {
-    index = START_FONT_ADDRESS + ((opcode & 0x0F00) >> 8) * 5;
+    index = START_FONT_ADDRESS + (registers[(opcode & 0x0F00) >> 8]) * 5;
 }
 
 /* Store binary-coded decimal value of register VX at addresses I, I + 1 and I + 2 */
@@ -364,7 +363,7 @@ void Chip8::OP_FX55() {
     int x = ((opcode & 0x0F00) >> 8);
 
     /* Go through each register from V0 to VX inclusive, insert values from them into memory starting at I */
-    for (int i = 0; i <= x; i++)
+    for (uint8_t i = 0; i <= x; i++)
         memory[index + i] = registers[i];
 
     /* Set the register I */
@@ -378,11 +377,8 @@ void Chip8::OP_FX65() {
 
     /* Go through each register from V0 to VX inclusive,
      * set their values to memory addresses values starting at I */
-    for (int i = 0; i <= x; i++)
+    for (uint8_t i = 0; i <= x; i++)
         registers[i] = memory[index + i];
-
-    /* Set the register I */
-    index = index + x + 1;
 }
 
 /* Do nothing, that Opcode isn't available */

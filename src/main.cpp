@@ -29,7 +29,7 @@ int main(int argc, char* args[]) {
     int pitch = sizeof(emu.video[0]) * VIDEO_WIDTH;
 
     /* Prepare last cycle time */
-    auto lastTime = std::chrono::system_clock::now();
+    auto lastTime = std::chrono::high_resolution_clock ::now();
 
     /* Quit flag */
     bool quit = false;
@@ -39,7 +39,7 @@ int main(int argc, char* args[]) {
         quit = Platform::ProcessInput(emu.keys);
 
         /* Save current cycle time */
-        auto currentTime = std::chrono::system_clock::now();
+        auto currentTime = std::chrono::high_resolution_clock::now();
         /* Calculate cycle duration */
         float duration = std::chrono::duration<float, std::chrono::milliseconds::period>
                 (currentTime - lastTime).count();
