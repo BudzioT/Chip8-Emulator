@@ -125,7 +125,7 @@ void Chip8::OP_1NNN() {
 /* Call the subroutine at the given address */
 void Chip8::OP_2NNN() {
     stack[sp++] = pc;
-    pc = opcode & 0xFFF;
+    pc = opcode & 0x0FFF;
 }
 
 /* Skip the next instruction if register VX is equal to the given NN byte */
@@ -207,10 +207,9 @@ void Chip8::OP_8XY5() {
  * set register VF to the least significant bit of VX prior to the change */
 void Chip8::OP_8XY6() {
     uint8_t VX = (opcode & 0x0F00) >> 8;
-    uint8_t VY = (opcode & 0x00F0) >> 4;
 
-    registers[0xF] = registers[VY] & 0x1;
-    registers[VX] = registers[VY] >> 1;
+    registers[0xF] = registers[VX] & 0x1;
+    registers[VX] >>= 1;
 }
 
 /* Set register VX to the value of VY subtracted by VX. If there was a borrow,
@@ -231,10 +230,9 @@ void Chip8::OP_8XY7() {
  * set the VF register to the most significant bit of VX prior to the change */
 void Chip8::OP_8XYE() {
     uint8_t VX = (opcode & 0x0F00) >> 8;
-    uint8_t VY = (opcode & 0x00F0) >> 4;
 
-    registers[0xF] = (registers[VY] & 0x80) >> 7;
-    registers[VX] = registers[VY] << 1;
+    registers[0xF] = (registers[VX] & 0x80) >> 7;
+    registers[VX] <<= 1;
 }
 
 /* If register VX isn't equal to VY, skip the next instruction */
@@ -408,13 +406,13 @@ void Chip8::TableE() {
 
 /* Use right opcode method from table F, based off of two last digits */
 void Chip8::TableF() {
-    ((*this).*(tableE[opcode & 0x00FF]))();
+    ((*this).*(tableF[opcode & 0x00FF]))();
 }
 
 /* Fetch, decode and execute the instruction, move pc to the next one */
 void Chip8::Cycle() {
     /* Fetch the opcode */
-    opcode = (memory[pc] << 8) & memory[pc + 1];
+    opcode = (memory[pc] << 8) | memory[pc + 1];
 
     /* Move to the next instruction */
     pc += 2;
