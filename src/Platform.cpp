@@ -3,44 +3,33 @@
 //
 
 #include <glad/glad.h>
+#include <cstdio>
 #include "includes/Platform.h"
 
 /* Initialize platform */
-Platform::Platform(const char *title, int width, int height, int textureWidth, int textureHeight) {
+Platform::Platform(const char *title, int width, int height,
+                   int textureWidth, int textureHeight) {
     /* Initialize video */
-    SDL_Init(SDL_INIT_VIDEO);
-
-    /* Set context profile to core 3.3 */
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+        printf("ERROR: SDL couldn't be initialized! SDL_Error: %s\n", SDL_GetError());
+        std::exit(EXIT_FAILURE);
+    }
 
     /* Create a window from given arguments which works on OpenGL and is resizable */
     window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+                              width, height, SDL_WINDOW_SHOWN);
+    if (!window) {
+        printf("ERROR: Window couldn't be initialized! SDL_Error: %s\n", SDL_GetError());
+        std::exit(EXIT_FAILURE);
+    }
 
-    /* Get window's context */
-    glContext = SDL_GL_CreateContext(window);
-    /* Turn on Vsync */
-    SDL_GL_SetSwapInterval(1);
-    /* Initialize GLAD */
-    gladLoadGLLoader((GLADloadproc) SDL_GL_GetProcAddress);
+    /* Create renderer, initialize it with certain logical size */
+    renderer = SDL_CreateRenderer(window, -1, 0);
+    SDL_RenderSetLogicalSize(renderer, width, height);
 
-    /* Generate texture, bind it */
-    glGenTextures(1, &framebufferTexture);
-    glBindTexture(GL_TEXTURE_2D, framebufferTexture);
-
-    /* Set filter and wrap parameters */
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    /* Specify texture image */
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-                 640, 320, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-    /* Unbind texture */
-    glBindTexture(GL_TEXTURE_2D, 0);
+    /* Initialize texture */
+    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888,
+                                SDL_TEXTUREACCESS_STREAMING, textureWidth, textureHeight);
 }
 
 /* Cleanup */

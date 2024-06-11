@@ -1,9 +1,7 @@
 cmake-build-debug/
 CMakeLists.txt
 .idea/
-ROMS/
 cmake_modules/
-glad.c
 
 CMakeLists.txt.user
 CMakeCache.txt

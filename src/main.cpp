@@ -1,25 +1,28 @@
 #include <iostream>
 #include <chrono>
+#include <thread>
 #include "includes/Chip8.h"
 #include "includes/Platform.h"
 
 int main(int argc, char* args[]) {
     /* Check if there is correct number of arguments */
-    if (argc != 4) {
-        std::cerr << "Proper usage: " << args[0] << " <Scale> <Delay> <ROM>\n";
+    if (argc != 3) {
+        std::cerr << "Proper usage: " << args[0] << "<Scale> <ROM>\n";
         std::exit(EXIT_FAILURE);
     }
 
     /* Video scale factor */
     int scale = std::stoi(args[1]);
-    /* Timer delay */
-    int delay = std::stoi(args[2]);
+
+    /* Time delay */
+    int delay = 2000;
+
     /* ROM file name */
-    const char* rom = args[3];
+    const char* rom = args[2];
 
     /* Initialize platform (I/O processing) */
     Platform platform("CHIP8", static_cast<int>(VIDEO_WIDTH * scale),
-                      static_cast<int>(VIDEO_HEIGHT * scale),VIDEO_WIDTH, VIDEO_HEIGHT);
+                      static_cast<int>(VIDEO_HEIGHT * scale), VIDEO_WIDTH, VIDEO_HEIGHT);
 
     /* Load ROM into emulator */
     Chip8 emu;
@@ -38,23 +41,13 @@ int main(int argc, char* args[]) {
         /* Process keys, check if the user wants to quit */
         quit = Platform::ProcessInput(emu.keys);
 
-        /* Save current cycle time */
-        auto currentTime = std::chrono::high_resolution_clock::now();
-        /* Calculate cycle duration */
-        float duration = std::chrono::duration<float, std::chrono::milliseconds::period>
-                (currentTime - lastTime).count();
+        /* Emulate current opcode */
+        emu.Cycle();
 
-        /* If duration is higher than delay, emulate */
-        if (duration > delay) {
-            /* Set proper last cycle time */
-            lastTime = currentTime;
+        /* Update output based on set pixels in emulator */
+        platform.Update(emu.video, pitch);
 
-            /* Emulate current opcode */
-            emu.Cycle();
-
-            /* Update output based on set pixels in emulator */
-            platform.Update(emu.video, pitch);
-        }
+        std::this_thread::sleep_for(std::chrono::microseconds(delay));
     }
 
     return 0;
