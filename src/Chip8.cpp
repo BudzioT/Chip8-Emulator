@@ -93,7 +93,7 @@ Chip8::Chip8() : pc(START_MEMORY), randEng(std::chrono::system_clock::now().time
 }
 
 /* Load ROM from file and put it into memory */
-void Chip8::LoadROM(const char *fileName) {
+bool Chip8::LoadROM(const char *fileName) {
     /* Open the file in binary mode, go to the end */
     std::ifstream file(fileName, std::ios::binary | std::ios::ate);
 
@@ -103,7 +103,11 @@ void Chip8::LoadROM(const char *fileName) {
         file.seekg(0, std::ios::beg);
         /* Read the ROM into memory */
         file.read(reinterpret_cast<char*>(&memory[START_MEMORY]), size);
+        file.close();
+        return true;
     }
+    file.close();
+    return false;
 }
 
 /* Clear the screen */

@@ -17,7 +17,7 @@ class Chip8
 public:
     Chip8();
 
-    void LoadROM(const char* fileName);
+    bool LoadROM(const char* fileName);
     void Cycle();
 
 private:
