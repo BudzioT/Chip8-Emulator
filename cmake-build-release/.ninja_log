@@ -1,5 +1,0 @@
-# ninja log v6
-32	1158	7399301242042633	CMakeFiles/Chip8_Emulator.dir/src/Platform.cpp.obj	56aaa5b980ef3f93
-25	1329	7399301241972810	CMakeFiles/Chip8_Emulator.dir/src/Chip8.cpp.obj	208e7f0adfffdffc
-2	2374	7399301241906594	CMakeFiles/Chip8_Emulator.dir/src/main.cpp.obj	5573d2ee58987bf
-2375	2604	7399301265468733	Chip8_Emulator.exe	8e378576a365c854
