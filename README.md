@@ -1,20 +1,20 @@
 # Chip8-Emulator
 
-##:computer: Info
+## :computer: Info
 A Chip-8 emulator made in C++. It always you to access and play ROMS made for this system.
 This emulator was written in C++, with CMake, using following libraries:<br>
 - SDL2       v-2.28.5
 - SDL2_mixer v-2.8.0
 
-##:hammer: How to build the project
+## :hammer: How to build the project
 - Download SDL2.
 - Move the .ddl files from the original libraries(include directory) to where your build executable is
 - Build the project with ROM path as an argument
 - If you want more options, write --help as the first argument.
 
-##:camera:Screenshots
+## :camera:Screenshots
 
-##:video_game: Controls
+## :video_game: Controls
 
 Chip-8 has hex keypad (0-F), it was converted to:
   | Chip-8 | Keyboard |
