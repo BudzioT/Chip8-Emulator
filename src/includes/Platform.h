@@ -21,6 +21,14 @@ private:
     SDL_Window* window { };
     SDL_Renderer* renderer { };
     SDL_Texture* texture { };
+    static constexpr int realKeys[16] = {
+            SDLK_x,
+            SDLK_1, SDLK_2, SDLK_3,
+            SDLK_q, SDLK_w, SDLK_e,
+            SDLK_a, SDLK_s, SDLK_d,
+            SDLK_z, SDLK_c, SDLK_4,
+            SDLK_r, SDLK_f, SDLK_v
+    };
 };
 
 

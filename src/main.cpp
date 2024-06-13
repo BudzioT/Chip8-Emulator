@@ -9,7 +9,7 @@ int main(int argc, char* args[]) {
     int scale = 10;
 
     /* Time delay */
-    int delay = 2000;
+    int delay = 1858;
 
     /* Check if there is correct number of arguments, if not tell the user */
     if (argc <= 1) {
