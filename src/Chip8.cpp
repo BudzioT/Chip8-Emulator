@@ -263,6 +263,7 @@ void Chip8::OP_CXNN() {
 /* Draw sprite at position VX, VY, with height of N, starting from index position.
  * If any pixels are changed to unset, change register VF to 1, otherwise set it to 0 */
 void Chip8::OP_DXYN() {
+    drawFlag = true;
     uint8_t VX = (opcode & 0x0F00) >> 8;
     uint8_t VY = (opcode & 0x00F0) >> 4;
 
