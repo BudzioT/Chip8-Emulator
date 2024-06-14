@@ -65,6 +65,7 @@ private:
 public:
     uint32_t video[64 * 32] { };
     uint8_t keys[16] { };
+    bool drawFlag = false;
 
 private:
     std::default_random_engine randEng;

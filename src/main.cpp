@@ -21,7 +21,7 @@ int main(int argc, char* args[]) {
     if (strcmp(args[1], "--help") == 0) {
         std::cout << "Normal usage Chip8_Emulator <ROM>\n"
                "Flags:\n"
-               "1: -d <value> for custom delay(default: 2000)\n"
+               "1: -d <value> for custom delay(default: 1500)\n"
                "2: -s <value> for custom video scale(default: 10)\n" << std::endl;
         std::exit(EXIT_SUCCESS);
     }
@@ -85,7 +85,10 @@ int main(int argc, char* args[]) {
         emu.Cycle();
 
         /* Update output based on set pixels in emulator */
-        platform.Update(emu.video, pitch);
+        if (emu.drawFlag) {
+            platform.Update(emu.video, pitch);
+            emu.drawFlag = false;
+        }
 
         /* Sleep for delay time */
         usleep(delay); /* usleep is more precise than sleep_for */
