@@ -8,8 +8,8 @@ This emulator was written in C++, with CMake, using following libraries:<br>
 
 ## :hammer: How to build the project
 - Download SDL2.
-- Move the .ddl files from the original libraries(include directory) to where your build executable is
-- Build the project with ROM path as an argument
+- Build the project with CMake.
+- Run the program with ROM path as the first argument.
 - If you want more options, write --help as the first argument.
 
 ## :camera:Screenshots
