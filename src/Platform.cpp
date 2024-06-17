@@ -2,7 +2,6 @@
 // Created by Bartosz Budnik on 09.06.2024.
 //
 
-#include <glad/glad.h>
 #include <cstdio>
 #include "includes/Platform.h"
 
