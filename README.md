@@ -6,11 +6,28 @@ This emulator was written in C++, with CMake, using following libraries:<br>
 - SDL2       v-2.28.5
 - SDL2_mixer v-2.8.0
 
-## :hammer: How to build the project
-- Download SDL2.
-- Build the project with CMake.
+## :hammer: How to build the project (Commands based off Ubuntu, if you have different system, change them)
+- Download SDL2 and CMake.
+```
+sudo apt install cmake
+sudo apt-get install libsdl2-dev.dnf
+```
+  
+- Make a directory for build
+- Run cmake and direct it to the directory with CMakeLists.txt
+- Run make
+```
+mkdir cmake-build
+cd cmake-build
+cmake ..
+make
+```
 - Run the program with ROM path as the first argument.
 - If you want more options, write --help as the first argument.
+```
+Chip8_Emulator --help
+```
+  
 
 ## :camera:Screenshots
 
