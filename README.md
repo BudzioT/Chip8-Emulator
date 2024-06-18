@@ -6,8 +6,8 @@ This emulator was written in C++, with CMake, using following libraries:<br>
 - SDL2       v-2.28.5
 
 ## :hammer: How to build the project
-(Commands based off Ubuntu, if you have different system, change them)
 - Download SDL2 and CMake.
+(Example based off Ubuntu)
 ```
 sudo apt install cmake
 sudo apt-get install libsdl2-dev.dnf
@@ -20,6 +20,13 @@ sudo apt-get install libsdl2-dev.dnf
 mkdir cmake-build
 cd cmake-build
 cmake ..
+make
+```
+WINDOWS:
+```
+mkdir cmake-build
+cd cmake-build
+cmake .. -DSDL2_PATH="path/to/SDL2"
 make
 ```
 - Run the program with ROM path as the first argument.
