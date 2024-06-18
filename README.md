@@ -3,7 +3,9 @@
 ## :computer: Info
 A Chip-8 emulator made in C++. It always you to access and play ROMS made for this system.
 This emulator was written in C++, with CMake, using following libraries:<br>
-- SDL2       v-2.28.5
+- SDL2       v-2.28.5<br>
+
+To get ROMS I recommend: https://github.com/kripod/chip8-roms
 
 ## :hammer: How to build the project
 - Download SDL2 and CMake.
@@ -22,13 +24,6 @@ cd cmake-build
 cmake ..
 make
 ```
-WINDOWS:
-```
-mkdir cmake-build
-cd cmake-build
-cmake .. -DSDL2_PATH="path/to/SDL2"
-make
-```
 - Run the program with ROM path as the first argument.
 ```
 ./Chip8_Emulator path/to/ROM
@@ -40,6 +35,16 @@ make
   
 
 ## :camera:Screenshots
+- Space Invaders:<br>
+![image](https://github.com/BudzioT/Chip8-Emulator/assets/145849460/aabf8d07-a8bf-423f-8263-3c6d2fa52269)
+- Tetris:<br>
+![image](https://github.com/BudzioT/Chip8-Emulator/assets/145849460/2efb4f81-b531-4d5e-8b6b-58595d75a77e)
+- OpCodes test:<br>
+![image](https://github.com/BudzioT/Chip8-Emulator/assets/145849460/0baab021-3957-46b7-9efd-3a7f43a07072)
+
+
+
+
 
 ## :video_game: Controls
 
