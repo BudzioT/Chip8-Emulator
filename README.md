@@ -4,7 +4,6 @@
 A Chip-8 emulator made in C++. It always you to access and play ROMS made for this system.
 This emulator was written in C++, with CMake, using following libraries:<br>
 - SDL2       v-2.28.5
-- SDL2_mixer v-2.8.0
 
 ## :hammer: How to build the project (Commands based off Ubuntu, if you have different system, change them)
 - Download SDL2 and CMake.
@@ -56,7 +55,4 @@ Chip-8 has hex keypad (0-F), it was converted to:
 ## :page_facing_up: Links to libraries
 SDL website: https://www.libsdl.org/<br>
 SDL: https://github.com/libsdl-org/SDL/releases/tag/release-2.28.5<br>
-SDL_image: https://github.com/libsdl-org/SDL_image/releases<br>
-SDL_mixer: https://github.com/libsdl-org/SDL_mixer/releases<br>
-SDL_ttf: https://github.com/libsdl-org/SDL_ttf/releases<br>
 
