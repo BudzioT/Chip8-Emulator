@@ -5,7 +5,8 @@ A Chip-8 emulator made in C++. It always you to access and play ROMS made for th
 This emulator was written in C++, with CMake, using following libraries:<br>
 - SDL2       v-2.28.5
 
-## :hammer: How to build the project (Commands based off Ubuntu, if you have different system, change them)
+## :hammer: How to build the project
+(Commands based off Ubuntu, if you have different system, change them)
 - Download SDL2 and CMake.
 ```
 sudo apt install cmake
