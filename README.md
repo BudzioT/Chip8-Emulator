@@ -22,6 +22,9 @@ cmake ..
 make
 ```
 - Run the program with ROM path as the first argument.
+```
+./Chip8_Emulator path/to/ROM
+```
 - If you want more options, write --help as the first argument.
 ```
 ./Chip8_Emulator --help
